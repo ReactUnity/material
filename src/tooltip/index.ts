@@ -18,7 +18,7 @@ const positions: Record<TooltipPosition, { anchor?: YogaValue2Aux, pivot?: Posit
 };
 
 export type TooltipProps = {
-  content: ReactNode;
+  content: ReactNode | () => ReactNode;
   target?: React.RefObject<ReactUnity.UGUI.UGUIComponent>;
   className?: string;
   anchor?: YogaValue2Aux;
@@ -157,7 +157,7 @@ function addTooltip(target: ReactUnity.UGUI.UGUIComponent, props: TooltipProps, 
   }
 
   UnityBridge.appendChild(anchor, tooltip);
-  Renderer.render(props.content, { disableHelpers: true, hostContainer: tooltip });
+  Renderer.render(typeof props.content === 'function' ? props.content() : props.content, { disableHelpers: true, hostContainer: tooltip });
   return anchor;
 }
 
